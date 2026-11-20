@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ecfc0f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Top Down Shooter</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="stage"><canvas id="game" width="1280" height="720"></canvas></div>
+
+<div id="rotate">Поверніть телефон горизонтально &#8635;</div>
+
+<div id="hud-buttons" class="hidden">
+  <button id="btn-mute" title="Звук">&#128266;</button>
+  <button id="btn-full" title="На весь екран">&#9974;</button>
+  <button id="btn-menu" title="Вийти">&#10005;</button>
+</div>
+
+<div id="ui">
+
+  <!-- ГОЛОВНЕ МЕНЮ -->
+  <section id="p-menu" class="panel">
+    <h1>Top Down Shooter</h1>
+    <p class="sub">Хвилі зомбі, боси, турелі та гра з друзями</p>
+    <label class="field">Ваше ім'я
+      <input id="name" maxlength="12" autocomplete="off" placeholder="Гравець">
+    </label>
+    <button id="b-solo" class="big primary">Грати соло</button>
+    <button id="b-host" class="big">Створити паті</button>
+    <div class="row">
+      <input id="code" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="КОД ПАТІ">
+      <button id="b-join" class="big">Приєднатись</button>
+    </div>
+    <button id="b-shop-menu">Магазин і покращення</button>
+    <p class="hint" id="controls-hint"></p>
+  </section>
+
+  <!-- ЛОБІ ПАТІ -->
+  <section id="p-lobby" class="panel hidden">
+    <h2>Паті</h2>
+    <div class="code" id="lobby-code">----</div>
+    <div class="row">
+      <button id="b-copy">Скопіювати посилання</button>
+      <button id="b-share">Поділитись</button>
+    </div>
+    <ul id="lobby-list"></ul>
+    <p class="hint" id="lobby-info"></p>
+    <button id="b-start" class="big primary">Старт</button>
+    <button id="b-shop-lobby">Магазин</button>
+    <button id="b-leave">Вийти з паті</button>
+  </section>
+
+  <!-- МАГАЗИН -->
+  <section id="p-shop" class="panel wide hidden">
+    <h2>Магазин</h2>
+    <div class="money" id="shop-money"></div>
+    <h3>Покращення</h3>
+    <div id="shop-up"></div>
+    <h3>Зброя</h3>
+    <div id="shop-weap"></div>
+    <p class="hint">Турелі купуються під час гри.</p>
+    <button id="b-shop-close" class="big primary">Готово</button>
+  </section>
+
+  <!-- КІНЕЦЬ ГРИ -->
+  <section id="p-over" class="panel hidden">
+    <h2>Гру завершено</h2>
+    <p id="over-text"></p>
+    <button id="b-again" class="big primary">Грати знову</button>
+    <button id="b-shop-over">Магазин</button>
+    <button id="b-menu">В меню</button>
+  </section>
+
+</div>
+
+<div id="toast"></div>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

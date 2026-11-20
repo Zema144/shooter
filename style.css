@@ -1,0 +1,177 @@
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #1b1b22;
+  color: #fff;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  overscroll-behavior: none;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+canvas {
+  background: #ecfc0f;
+  touch-action: none;
+  display: block;
+}
+
+.hidden { display: none !important; }
+
+/* ---------- Інтерфейс поверх гри ---------- */
+
+#ui {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  padding: 12px;
+}
+
+.panel {
+  pointer-events: auto;
+  width: min(420px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  background: rgba(24, 24, 32, 0.96);
+  border: 1px solid #3a3a4a;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  touch-action: pan-y;
+}
+
+.panel.wide { width: min(640px, 100%); }
+
+h1 { margin: 0; font-size: 28px; color: #ecfc0f; text-align: center; }
+h2 { margin: 0; font-size: 24px; text-align: center; }
+h3 { margin: 6px 0 0; font-size: 15px; color: #a9a9c8; font-weight: 600; }
+.sub, .hint { margin: 0; text-align: center; color: #9a9ab5; font-size: 13px; line-height: 1.4; }
+.money { text-align: center; color: #ffdc50; font-size: 20px; font-weight: 700; }
+
+button, input {
+  font: inherit;
+  color: #fff;
+  border-radius: 10px;
+  border: 1px solid #4a4a60;
+  background: #34344a;
+  padding: 12px 14px;
+  min-height: 46px;
+}
+
+button { cursor: pointer; font-weight: 600; }
+button:active { filter: brightness(1.25); }
+button:disabled { opacity: 0.45; cursor: default; }
+button.big { font-size: 18px; min-height: 52px; }
+button.primary { background: #2f8f46; border-color: #3fb25c; }
+
+input { width: 100%; text-align: center; user-select: text; -webkit-user-select: text; }
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #a9a9c8; }
+.row { display: flex; gap: 8px; }
+.row > input { flex: 0 0 38%; text-transform: uppercase; letter-spacing: 2px; }
+.row > button { flex: 1; }
+
+.code {
+  text-align: center;
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: #ecfc0f;
+}
+
+#lobby-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+#lobby-list li {
+  display: flex; align-items: center; gap: 10px;
+  background: #2a2a3a; border-radius: 10px; padding: 10px 12px;
+}
+.dot { width: 16px; height: 16px; border-radius: 50%; flex: none; }
+
+/* ---------- Магазин ---------- */
+
+.shop-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  width: 100%;
+  font-weight: 500;
+  font-size: 15px;
+}
+.shop-row small { display: block; color: #bdbdd8; font-weight: 400; }
+.shop-row .price { white-space: nowrap; font-weight: 700; color: #ffdc50; }
+.shop-row.equipped { background: #4a4a80; }
+.shop-row.max .price { color: #7fe39a; }
+#shop-up, #shop-weap { display: flex; flex-direction: column; gap: 6px; }
+
+/* ---------- Кнопки під час гри ---------- */
+
+#hud-buttons {
+  position: fixed;
+  top: calc(8px + env(safe-area-inset-top));
+  right: calc(8px + env(safe-area-inset-right));
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+}
+#hud-buttons button {
+  min-height: 40px; width: 40px; padding: 0;
+  background: rgba(0, 0, 0, 0.45); border-color: rgba(255, 255, 255, 0.3);
+  font-size: 18px;
+}
+
+/* ---------- Підказка повернути телефон ---------- */
+
+#rotate {
+  display: none;
+  position: fixed; inset: 0; z-index: 20;
+  background: rgba(0, 0, 0, 0.88);
+  align-items: center; justify-content: center;
+  font-size: 22px; text-align: center; padding: 30px;
+}
+@media (orientation: portrait) {
+  body.playing.touch #rotate { display: flex; }
+}
+
+/* ---------- Повідомлення ---------- */
+
+#toast {
+  position: fixed;
+  left: 50%; bottom: 24px;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 15px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 30;
+  max-width: 90vw;
+  text-align: center;
+}
+#toast.show { opacity: 1; }
+
+/* Низький екран (телефон горизонтально) */
+@media (max-height: 520px) {
+  .panel { padding: 12px; gap: 6px; }
+  h1 { font-size: 22px; }
+  .code { font-size: 32px; }
+  button.big { min-height: 44px; font-size: 16px; }
+  .sub { display: none; }
+}
